@@ -1,0 +1,85 @@
+id: invidious 
+title: "Invidious"
+version: 0.0.1.8
+release-notes: | 
+  * First Attemp
+license: AGPL-3.0
+wrapper-repo: "https://github.com/Start9Labs/invidious-wrapper"
+upstream-repo: "https://github.com/iv-org/invidious"
+support-site: "https://matrix.to/#/#invidious:matrix.org"
+marketing-site: "https://invidious.io/"
+donation-url: "https://invidious.io/donate/"
+build: ["make"]
+description:
+  short: Invidious is an open source alternative front-end to YouTube.
+  long: |
+    Invidious is an open-source alternative to YouTube. It aims to provide a faster, more privacy-respecting, and ad-free way to browse and watch videos from the site. It also includes features like a dark mode and the ability to play videos in the background. Invidious can be run on a user's own server or accessed through instances run by others.
+assets:
+  license: LICENSE
+  icon: icon.png
+  instructions: instructions.md
+main:
+  type: docker
+  image: main
+  entrypoint: docker_entrypoint.sh
+  args: []
+  mounts:
+    main: /root
+health-checks: {}
+config: ~
+properties: ~
+volumes:
+  main:
+    type: data
+interfaces:
+  main:
+    name: Invidious Web Interface
+    description: Specifies the interface to listen on for HTTP connections.
+    tor-config:
+      port-mapping:
+        80: "9009"
+    lan-config:
+      443:
+        ssl: true
+        internal: 9009
+    ui: true
+    protocols:
+      - tcp
+      - http
+dependencies: {}
+backup:
+  create:
+    type: docker
+    image: compat
+    system: true 
+    entrypoint: compat 
+    args: 
+      - duplicity
+      - create
+      - /mnt/backup
+      - /root/data
+    mounts:
+      BACKUP: "/mnt/backup" 
+      main: "/root/data"
+  restore:
+    type: docker
+    image: compat
+    system: true
+    entrypoint: compat
+    args:
+      - duplicity
+      - restore
+      - /mnt/backup
+      - /root/data
+    mounts:
+      BACKUP: "/mnt/backup"
+      main: "/root/data"
+migrations:
+ from:
+   "*":
+     type: script
+     args: ["from"]
+ to:
+   "*":
+     type: script
+     args: ["to"]
