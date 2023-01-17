@@ -1,6 +1,6 @@
 id: invidious 
 title: "Invidious"
-version: 0.0.1.8
+version: 0.0.1.10
 release-notes: | 
   * First Attemp
 license: AGPL-3.0
@@ -37,11 +37,11 @@ interfaces:
     description: Specifies the interface to listen on for HTTP connections.
     tor-config:
       port-mapping:
-        80: "9009"
+        80: "9050"
     lan-config:
       443:
         ssl: true
-        internal: 9009
+        internal: 3240
     ui: true
     protocols:
       - tcp
