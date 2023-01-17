@@ -5,6 +5,7 @@ RUN apk add --no-cache crystal shards sqlite-static yaml-static yaml-dev libxml2
 RUN apk add -u imagemagick ttf-opensans
 RUN apk add libxml2-dev
 RUN apk add xz-dev
+RUN apk add bash
 
 
 RUN apk add --no-cache tini && \
@@ -18,6 +19,12 @@ WORKDIR /invidious
 
 RUN shards && \
     crystal build -Ddisable_quic src/invidious.cr
+
+ENV APP_HOST invidious.embassy
+ENV APP_PORT 3420
+ENV TOR_PROXY_IP embassy
+ENV TOR_PROXY_PORT 9050
+
 
 ADD ./docker_entrypoint.sh /usr/local/bin/invidious/docker_entrypoint.sh
 RUN chmod a+x /usr/local/bin/invidious/*.sh
