@@ -1,6 +1,6 @@
 id: invidious 
 title: "Invidious"
-version: 0.0.1.10
+version: 0.0.1.19
 release-notes: | 
   * First Attemp
 license: AGPL-3.0
@@ -21,7 +21,7 @@ assets:
 main:
   type: docker
   image: main
-  entrypoint: docker_entrypoint.sh
+  entrypoint: /usr/local/bin/docker_entrypoint.sh
   args: []
   mounts:
     main: /root
